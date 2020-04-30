@@ -3,8 +3,8 @@ const { CovidAPI } = require('./dataSources');
 
 const typeDefs = gql`
   type Country {
-    id: Int!
-    name: String!
+    uid: Int!
+    countryRegion: String
     confirmed: Int!
     recovered: Int!
     deaths: Int!
@@ -12,17 +12,17 @@ const typeDefs = gql`
   }
 
   type Query {
-    country(iso: String!): Country
     countries: [Country!]!
+    country(iso: String!): Country
   }
 `;
 
 const resolvers = {
   Query: {
-    countries: async (_source, args, { dataSources }) => {
+    countries: (_source, args, { dataSources }) => {
       return dataSources.covidAPI.getAllCountries();
     },
-    country: async (_source, { iso }, { dataSources }) => {
+    country: (_source, { iso }, { dataSources }) => {
       return dataSources.covidAPI.getCountry(iso);
     }
   }
@@ -33,8 +33,7 @@ const server = new ApolloServer({
   resolvers,
   dataSources: () => ({
     covidAPI: new CovidAPI()
-  }),
-  introspection: true
+  })
 });
 
 server.listen().then(({ url }) => {

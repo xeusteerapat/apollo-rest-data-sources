@@ -11,8 +11,8 @@ class CovidAPI extends RESTDataSource {
   }
 
   async getCountry(iso) {
-    return this.get(`countries/${iso}`);
+    return this.get('countries/' + iso + '/confirmed');
   }
 }
 
-module.exports = CovidAPI;
+module.exports.CovidAPI = CovidAPI;
