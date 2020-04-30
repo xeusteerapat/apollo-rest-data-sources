@@ -13,7 +13,7 @@ const typeDefs = gql`
 
   type Query {
     countries: [Country!]!
-    country(name: String!): Country
+    country(iso: String!): Country
   }
 `;
 
@@ -22,13 +22,8 @@ const resolvers = {
     countries: (_source, args, { dataSources }) => {
       return dataSources.covidAPI.getAllCountries();
     },
-    country: async (_source, { name }, { dataSources }) => {
-      const allCountries = await dataSources.covidAPI.getAllCountries();
-      const selectedCountry = allCountries.find(
-        (country) => name.toLowerCase() === country.countryRegion.toLowerCase()
-      );
-      console.log(selectedCountry);
-      return selectedCountry;
+    country: (_source, { iso }, { dataSources }) => {
+      return dataSources.covidAPI.getCountry(iso);
     }
   }
 };

@@ -11,7 +11,8 @@ class CovidAPI extends RESTDataSource {
   }
 
   async getCountry(iso) {
-    return this.get('countries/' + iso + '/confirmed');
+    const selectedCountry = await this.get(`countries/${iso}/confirmed`);
+    return selectedCountry[0];
   }
 }
 
