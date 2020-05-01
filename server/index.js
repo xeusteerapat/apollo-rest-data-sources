@@ -1,6 +1,8 @@
 const { ApolloServer, gql } = require('apollo-server');
 const { CovidAPI } = require('./dataSources');
 
+console.log(CovidAPI);
+
 const typeDefs = gql`
   type Country {
     uid: Int!
